@@ -17,7 +17,7 @@ func main() {
 	exchangeName := flag.String("exchange-name", "", "exchange name")
 	fileName := flag.String("file-name", "", "file name")
 	host := flag.String("host", "", "rabbitmq host")
-	port := flag.Int("port", 0, "rabbitmq port")
+	port := flag.Int("port", 5672, "rabbitmq port")
 
 	flag.Parse()
 
