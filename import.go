@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func importQueue(host string, port int, queueName string, fileName string) error {
+func importQueue(host string, port int, queueName string, fileName string, consume bool) error {
 	fmt.Println(fmt.Sprintf("Importing queue %s into file %s", queueName, fileName))
 	file, err := os.Create(fileName)
 	if err != nil {
@@ -40,6 +40,9 @@ func importQueue(host string, port int, queueName string, fileName string) error
 			break
 		}
 		fmt.Fprintln(writer, string(msg.Body))
+		if consume {
+			msg.Ack(false)
+		}
 		if counter++; counter%10000 == 0 {
 			fmt.Println(fmt.Sprintf("Messages imported: %d", counter))
 		}

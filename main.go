@@ -18,6 +18,7 @@ func main() {
 	fileName := flag.String("file-name", "", "file name")
 	host := flag.String("host", "", "rabbitmq host")
 	port := flag.Int("port", 5672, "rabbitmq port")
+	consume := flag.Bool("consume", false, "whether messages need to be consumed or left in the queue")
 
 	flag.Parse()
 
@@ -31,7 +32,7 @@ func main() {
 
 	switch *mode {
 	case IMPORT:
-		if err := importQueue(*host, *port, *queueName, *fileName); err != nil {
+		if err := importQueue(*host, *port, *queueName, *fileName, *consume); err != nil {
 			fmt.Println(fmt.Sprintf("Error importing: %s", err.Error()))
 		}
 	case EXPORT:
