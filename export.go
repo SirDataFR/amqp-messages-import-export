@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func exportQueue(host string, port int, exchangeName string, fileName string) error {
+func exportQueue(host string, port int, exchangeName string, fileName string, count int, tick int) error {
 	fmt.Println(fmt.Sprintf("Exporting file %s into exchange %s", fileName, exchangeName))
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -50,8 +50,11 @@ func exportQueue(host string, port int, exchangeName string, fileName string) er
 				}); err != nil {
 				return err
 			}
-			if counter++; counter%10000 == 0 {
+			if counter++; counter%tick == 0 {
 				fmt.Println(fmt.Sprintf("Messages exported: %d", counter))
+			}
+			if count != 0 && counter >= count {
+				break
 			}
 		}
 	}

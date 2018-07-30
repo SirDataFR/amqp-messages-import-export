@@ -19,6 +19,8 @@ func main() {
 	host := flag.String("host", "", "rabbitmq host")
 	port := flag.Int("port", 5672, "rabbitmq port")
 	consume := flag.Bool("consume", false, "whether messages need to be consumed or left in the queue")
+	count := flag.Int("count", 0, "number of messages to import/export")
+	tick := flag.Int("tick", 10000, "messages displayed in logs every [tick] messages imported/exported")
 
 	flag.Parse()
 
@@ -32,11 +34,11 @@ func main() {
 
 	switch *mode {
 	case IMPORT:
-		if err := importQueue(*host, *port, *queueName, *fileName, *consume); err != nil {
+		if err := importQueue(*host, *port, *queueName, *fileName, *consume, *count, *tick); err != nil {
 			fmt.Println(fmt.Sprintf("Error importing: %s", err.Error()))
 		}
 	case EXPORT:
-		if err := exportQueue(*host, *port, *exchangeName, *fileName); err != nil {
+		if err := exportQueue(*host, *port, *exchangeName, *fileName, *count, *tick); err != nil {
 			fmt.Println(fmt.Sprintf("Error exporting: %s", err.Error()))
 		}
 	default:
