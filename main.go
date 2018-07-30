@@ -15,6 +15,7 @@ func main() {
 	mode := flag.String("mode", "", "import/export")
 	queueName := flag.String("queue-name", "", "queue name")
 	exchangeName := flag.String("exchange-name", "", "exchange name")
+	key := flag.String("key", "", "key for exporting in the exchange")
 	fileName := flag.String("file-name", "", "file name")
 	host := flag.String("host", "", "rabbitmq host")
 	port := flag.Int("port", 5672, "rabbitmq port")
@@ -38,7 +39,7 @@ func main() {
 			fmt.Println(fmt.Sprintf("Error importing: %s", err.Error()))
 		}
 	case EXPORT:
-		if err := exportQueue(*host, *port, *exchangeName, *fileName, *count, *tick); err != nil {
+		if err := exportQueue(*host, *port, *exchangeName, *fileName, *key, *count, *tick); err != nil {
 			fmt.Println(fmt.Sprintf("Error exporting: %s", err.Error()))
 		}
 	default:
