@@ -27,7 +27,7 @@ func main() {
 
 	if *mode == "" ||
 		(*mode == IMPORT && *queueName == "") ||
-		(*mode == EXPORT && *exchangeName == "") ||
+		(*mode == EXPORT && *exchangeName == "" && *queueName == "") ||
 		*fileName == "" || *host == "" || *port == 0 {
 		fmt.Println("Missing parameter(s)")
 		os.Exit(1)
@@ -39,7 +39,7 @@ func main() {
 			fmt.Println(fmt.Sprintf("Error importing: %s", err.Error()))
 		}
 	case EXPORT:
-		if err := exportQueue(*host, *port, *exchangeName, *fileName, *key, *count, *tick); err != nil {
+		if err := exportQueue(*host, *port, *exchangeName, *fileName, *key, *queueName, *count, *tick); err != nil {
 			fmt.Println(fmt.Sprintf("Error exporting: %s", err.Error()))
 		}
 	default:

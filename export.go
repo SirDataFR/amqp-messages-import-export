@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func exportQueue(host string, port int, exchangeName string, fileName string, key string, count int, tick int) error {
+func exportQueue(host string, port int, exchangeName string, fileName string, key string, queueName string, count int, tick int) error {
 	fmt.Println(fmt.Sprintf("Exporting file %s into exchange %s", fileName, exchangeName))
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -29,6 +29,13 @@ func exportQueue(host string, port int, exchangeName string, fileName string, ke
 	}
 	defer channel.Close()
 
+	mKey := ""
+	if key != "" {
+		mKey = key
+	} else {
+		mKey = queueName
+	}
+
 	counter := 0
 	for {
 		ok := scanner.Scan()
@@ -40,7 +47,7 @@ func exportQueue(host string, port int, exchangeName string, fileName string, ke
 		} else {
 			if err := channel.Publish(
 				exchangeName,
-				key,
+				mKey,
 				false,
 				false,
 				amqp.Publishing{
