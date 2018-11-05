@@ -16,6 +16,8 @@ func exportQueue(host string, port int, exchangeName string, fileName string, ke
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	buf := make([]byte, 0, bufio.MaxScanTokenSize)
+	scanner.Buffer(buf, 1024*1024)
 
 	connection, err := amqp.Dial(fmt.Sprintf("amqp://%s:%d", host, port))
 	if err != nil {
