@@ -8,7 +8,7 @@ import (
 )
 
 func exportQueue(host string, port int, exchangeName string, fileName string, key string, queueName string, count int, tick int) error {
-	fmt.Println(fmt.Sprintf("Exporting file %s into exchange %s", fileName, exchangeName))
+	fmt.Println(fmt.Sprintf("Exporting file %s with parameters exchange=%s, key=%s, queue=%s", fileName, exchangeName, key, queueName))
 	file, err := os.Open(fileName)
 	if err != nil {
 		return err
@@ -31,11 +31,11 @@ func exportQueue(host string, port int, exchangeName string, fileName string, ke
 	}
 	defer channel.Close()
 
-	mKey := ""
+	routingKey := ""
 	if key != "" {
-		mKey = key
+		routingKey = key
 	} else {
-		mKey = queueName
+		routingKey = queueName
 	}
 
 	counter := 0
@@ -49,7 +49,7 @@ func exportQueue(host string, port int, exchangeName string, fileName string, ke
 		} else {
 			if err := channel.Publish(
 				exchangeName,
-				mKey,
+				routingKey,
 				false,
 				false,
 				amqp.Publishing{
